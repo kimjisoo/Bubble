@@ -363,15 +363,20 @@ public class PageImageView extends ImageView {
             float newScaleFactor = newScale / m[Matrix.MSCALE_X];
 
             mMatrix.postScale(newScaleFactor, newScaleFactor, mX, mY);
-            setImageMatrix(mMatrix);
 
             if (t < 1f) {
                 post(this);
             }
             else {
                 // set exact scale
-                mMatrix.getValues(m);
-                mMatrix.setScale(mScale, mScale);
+                Drawable drawable = getDrawable();
+                int dwidth = drawable.getIntrinsicWidth();
+                int dheight = drawable.getIntrinsicHeight();
+                int vwidth = getWidth();
+                int vheight = getHeight();
+
+                float widthScale = (float)getWidth()/drawable.getIntrinsicWidth();
+                mMatrix.setScale(widthScale, widthScale);
                 mMatrix.postTranslate(m[Matrix.MTRANS_X], m[Matrix.MTRANS_Y]);
                 setImageMatrix(mMatrix);
             }
